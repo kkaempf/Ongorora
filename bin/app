@@ -1,0 +1,138 @@
+#!/usr/bin/env ruby
+
+require "sinatra/base"
+require "sinatra/assetpack"
+require "sinatra/advanced_routes"
+require "haml"
+require "json"
+require "time"
+
+$:.unshift File.expand_path(File.join(File.dirname(__FILE__), ".."))
+
+require "lib/ongorora"
+
+class App < Sinatra::Base
+  register Sinatra::AdvancedRoutes
+
+  ROOT_PATH = File.join(File.expand_path("..", File.dirname(__FILE__)))
+  self.set :root, File.join(ROOT_PATH, "lib")
+  set :public_folder, File.join(ROOT_PATH, "public")
+  set :views, File.join(ROOT_PATH, "views")
+  set :bind, "0.0.0.0"
+  set :port, Ongorora::Config["port"] || 4567
+  theme = Ongorora::Config["theme"] || "default"
+
+  register Sinatra::AssetPack
+
+  assets {
+    serve "/js",        from: "../public/vendor/js"
+    serve "/customjsx", from: "../public/jsx"
+    serve "/css",       from: "../public/vendor/css"
+    serve "/customcss", from: "../public/css"
+    serve "/images",    from: "../public/images"
+
+    js :jquery, "/js/jquery/jquery-3.1.1.min.js", [
+      "/js/jquery/jquery-3.1.1.js"
+    ]
+    js :react, "/js/react/react.min.js", [
+      "/js/react/react.js",
+      "/js/react/react-dom.js"
+    ]
+    js :babel, [
+      "/js/babel-standalone/babel.min.js"
+    ]
+    js :bootstrap, "/js/bootstrap/bootstrap.min.js", [
+      "/js/bootstrap/bootstrap.js"
+    ]
+    js :bootstrap_table, "/js/bootstrap-table/bootstrap-table.min.js", [
+      "/js/bootstrap-table/bootstrap-table.js"
+    ]
+
+    css :bootstrap, "/css/bootstrap/#{theme}/bootstrap.min.css", [
+      "/css/bootstrap/#{theme}/bootstrap.css"
+    ]
+    css :bootstrap_table, "/css/bootstrap-table/bootstrap-table.min.css", [
+      "/css/bootstrap-table/bootstrap-table.css"
+    ]
+    css :material, "/css/material/material.min.css", [
+      "/css/material/material.css"
+    ]
+    css :customcss, [
+      "/customcss/Ongorora.css"
+    ]
+
+    js_compression  :jsmin
+    css_compression :simple
+  }
+
+  def initialize
+    super
+    @title = Ongorora::Config["title"] || "Ongorora"
+    @theme_type = get_theme_type
+    @colors = Ongorora.get_colors
+  end
+
+  helpers do
+    ### generic helpers
+
+    def get_theme_type
+      theme = Ongorora::Config["theme"] || "default"
+      if ["cyborg", "darkly", "slate", "superhero"].include? theme
+        "dark"
+      else
+        "light"
+      end
+    end
+
+    def entry
+      @entry ||= Ongorora.database.read(params[:id]) rescue halt(404)
+    end
+  end
+
+
+  #
+  # MAIN Routes
+  #
+
+  get "/" do
+    haml :index
+  end
+
+  get "/json/help" do
+    routes = []
+    App.each_route do |route|
+      routes << {:route => route.path} if route.path.is_a? String
+    end
+    routes.uniq.to_json
+  end
+
+  get "/help" do
+    haml :help
+  end
+
+  get "/error" do
+    haml :error
+  end
+
+  get "/Ongorora/index", provides: :json do
+    begin
+      items = Ongorora.database.index
+      return items.to_json
+    rescue Exception => e
+      Ongorora.logger.error "Error getting index: #{e}"
+      redirect to('/error'), e
+    end
+  end
+
+  get "/Ongorora/entry/:hash", provides: :json do
+    begin
+      entry = Ongorora.database.read params["hash"]
+      return entry.to_json
+    rescue Exception => e
+      Ongorora.logger.error "Error getting entry (#{hash}): #{e}"
+      redirect to('/error'), e
+    end
+  end
+
+  run! if app_file == $0
+end

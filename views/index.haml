@@ -1,0 +1,17 @@
+!!!
+.container-fluid
+  %div.col-md-12
+    %div.panel.panel-default.col-md-12
+      %div.panel-heading
+        %h3.panel-title.title{:align => "left"}
+          Ongorora
+      %div.panel-body
+        #index
+
+!= js :jquery
+!= js :react
+!= js :babel
+%script{:type => "text/babel", :src => "jsx/entry.jsx"}
+%script{:type => "text/babel", :src => "jsx/index.jsx"}
+!= js :bootstrap
+!= js :bootstrap_table

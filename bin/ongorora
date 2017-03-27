@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+
+require "trollop"
+require File.join(File.expand_path("..", File.dirname(__FILE__)),"lib","ongorora")
+
+opts = Trollop::options do
+  # keep 'short' options in sorted order
+  opt :import, "Import files or directories",  :short => 'i', :type => :string
+  opt :server, "Start Ongorora webinterface",   :short => 's'
+  opt :debug,  "Debug",                        :short => 'd'
+end
+
+abort("try ongorora -h") if opts.all?{|k,v| v.is_a?(FalseClass)}
+
+DEBUG = opts[:debug_given]
+
+if opts[:server_given]
+  if Ongorora::Config.database.nil?
+    abort("Configure a database, there is nothing to be shown")
+  else
+    begin
+      `#{File.join(File.expand_path("..", File.dirname(__FILE__)),"bin","app")} #{DEBUG}`
+    rescue Interrupt
+      sleep 2
+      exit
+    end
+  end
+end
+
+Ongorora = Ongorora::Ongorora.new
+
+opts.each_pair do |key,val|
+#  puts "Opt #{key.inspect} : #{val.inspect}" if DEBUG
+  next unless val
+  next if key == :debug
+  next if key == :debug_given
+  case key
+  when :import
+    begin
+      Ongorora.import val
+    rescue Exception => e
+      $stderr.puts "Import failed: #{e}"
+    end
+  end
+end
