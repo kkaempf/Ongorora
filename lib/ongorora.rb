@@ -5,8 +5,11 @@ unless defined?(TOPLEVEL)
 end
 
 require_relative "ongorora/config"
+require_relative "ongorora/content"
 require_relative "ongorora/database"
+require_relative "ongorora/date"
 require_relative "ongorora/logger"
+require_relative "ongorora/supportconfig"
 require_relative "ongorora/version"
 
 module Ongorora

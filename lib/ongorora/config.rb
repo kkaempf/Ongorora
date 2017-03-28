@@ -19,6 +19,10 @@ module Ongorora
       end
       @@yaml
     end
+    # set database url
+    def self.database_url= url
+      self.content['database']['url'] = url
+    end
     # access config section by name
     def self.[] name
       self.content[name]

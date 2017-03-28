@@ -20,45 +20,36 @@ module Ongorora
     def client
       @client
     end
-    #
-    # CRUD basics
-    #
-    def index
-      search Hash.new
-    end
-    def search hash
-      puts "search #{hash.inspect}"
-      query = ""
-      hash.each do |k,v|
-        query << " and " unless query.empty?
-        query << "#{k}:#{v}"
+    def _search opt
+      obj = @client.search opt
+      # STDERR.puts "obj #{obj.inspect}"
+      obj['hits']['hits'].map do |h|
+        # STDERR.puts "h #{h.inspect}"
+        h['_source']
       end
-      query = { match_all: {} } if query.empty?
-      puts "Query #{query.inspect}"
+    end
+    #
+    # read/search
+    #   :index
+    #   :type
+    #   :id
+    def read options = {}
+      opt = {}
+      opt[:index] = options[:index] || @index
+      opt[:type] = options[:type] || TYPE
       begin
-        obj = @client.search index: @index, q: query
-        puts "@client.search #{obj.inspect}"
-        hits = obj["hits"]
-        total = hits["total"] rescue 0
-        if total > 0
-          res = hits["hits"].map do |hit|
-            hit["_id"]
-          end
+        if options[:id]
+          opt[:id] = options[:id]
+          obj = @client.get opt
+          #        puts "Read: #{obj.inspect}"
+          obj['_source']
+        elsif options[:where]
+          k, v = options[:where].first
+          opt[:q] = "#{k}:#{v}"
+          _search opt
         else
-          res = []
+          _search opt
         end
-#        puts "Search: #{res.inspect}"
-        res
-      rescue Exception => e
-        Logger.error "Elasticsearch.search(#{hash.inspect}) failed: #{e}"
-        raise
-      end
-    end
-    def read id
-      begin
-        obj = @client.get index: @index, type: TYPE, id: id
-#        puts "Read: #{obj.inspect}"
-        obj['_source']
       rescue Elasticsearch::Transport::Transport::Errors::NotFound
         nil
       end

@@ -13,8 +13,8 @@ var Entry = React.createClass({
   },
   componentDidMount: function() {
     console.log("Entry componentDidMount");
-    $.get("/ordnung/entry/"+this.props.hash).done(function(data) {
-      console.log("Entry /ordnung/entry/"+this.props.hash);
+    $.get("/ongorora/entry/"+this.props.hash).done(function(data) {
+      console.log("Entry /ongorora/entry/"+this.props.hash);
       this.setState({data: data});
     }.bind(this));
   },

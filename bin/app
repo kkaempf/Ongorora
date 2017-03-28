@@ -58,7 +58,7 @@ class App < Sinatra::Base
       "/css/material/material.css"
     ]
     css :customcss, [
-      "/customcss/Ongorora.css"
+      "/customcss/ongorora.css"
     ]
 
     js_compression  :jsmin
@@ -114,25 +114,35 @@ class App < Sinatra::Base
     haml :error
   end
 
-  get "/Ongorora/index", provides: :json do
-    begin
-      items = Ongorora.database.index
-      return items.to_json
-    rescue Exception => e
-      Ongorora.logger.error "Error getting index: #{e}"
-      redirect to('/error'), e
-    end
+  # database url accessor
+
+  get "/database/url", provides: :json do
+    url = Ongorora::Config['database']['url'] rescue ""
+    url.to_json
   end
 
-  get "/Ongorora/entry/:hash", provides: :json do
-    begin
-      entry = Ongorora.database.read params["hash"]
-      return entry.to_json
-    rescue Exception => e
-      Ongorora.logger.error "Error getting entry (#{hash}): #{e}"
-      redirect to('/error'), e
-    end
+  post "/database/url" do
+    STDERR.puts "params #{params.inspect}"
+    Ongorora::Config.database_url = params['url']
   end
+
+  # index of all supportconfigs
+
+  get "/supportconfig", provides: :json do
+    STDERR.puts "/supportconfig"
+    items = Ongorora::Supportconfig.all
+    items.to_json
+  end
+
+  # single supportconfig data
+  get "/supportconfig/:name", provides: :json do
+    STDERR.puts "/supportconfig/#{params['name'].inspect}"
+    supportconfig = Ongorora::Supportconfig.get params['name']
+    date = Ongorora::Date.get params['name']
+    supportconfig['date'] = date
+    supportconfig.to_json
+  end
+
 
   run! if app_file == $0
 end

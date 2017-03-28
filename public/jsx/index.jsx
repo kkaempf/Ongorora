@@ -1,39 +1,99 @@
-
-var Entries = React.createClass({
+var SupportconfigIndexEntry  = React.createClass({
+  getInitialState: function() {
+    console.log("SupportconfigIndexEntry getInitialState " + this.props.entry);
+    $.get("/supportconfig/"+this.props.entry).done(function(data) {
+      console.log("/supportconfig/" + this.props.entry);
+      this.setState({entry: data});
+    }.bind(this));
+    return { entry: null };
+  },
   render: function() {
-    console.log("Entries.render: " + JSON.stringify(this.props.data));
-    this.props.data.map((entry) =>
-      console.log("Entries.entry " + entry)
-    )
-    return <div>{this.props.data.map((entry) =>
-      <Entry hash={entry} key={entry}/>
-    )}</div>;
+    if (this.state.entry) {
+      var entry = this.state.entry;
+      return <div className="supportconfig_index_entry col-md-12">
+               <span className="supportconfig_index_entry_name col-md-6">
+                 {entry.name}
+               </span>
+               <span className="supportconfig_index_entry_request col-md-3">
+                 {entry.request}
+               </span>
+               <span className="supportconfig_index_entry_date col-md-3">
+                 {entry.date}
+               </span>
+             </div>;
+    }
+    else {
+      return <div className="supportconfig_index_entry col-md-12"></div>;
+    }
   }
 });
 
-var Index = React.createClass({
+var SupportconfigIndex = React.createClass({
   getInitialState: function() {
-    console.log("Index getInitialState");
+    console.log("Supportconfigs getInitialState");
+    $.get("/supportconfig").done(function(data) {
+      console.log("/supportconfig");
+      this.setState({data: data});
+    }.bind(this));
     return { data: null };
   },
-  componentDidMount: function() {
-    console.log("Index componentDidMount");
-    $.get("/ordnung/index").done(function(entries) {
-      console.log("/ordnung/index");
-      this.setState({data: entries});
-    }.bind(this));
-  },
   render: function() {
-    console.log("Index render");
     if (this.state.data) {
-      console.log("calling Entries: " + this.state.data);
-      return <Entries data={this.state.data} />;
+      return <div className="supportconfig_index col-md-12">
+               <span className="supportconfig_index_head col-md-6">
+                 Name
+               </span>
+               <span className="supportconfig_index_head col-md-3">
+                 Request
+               </span>
+               <span className="supportconfig_index_head col-md-3">
+                 Date
+               </span>
+               {this.state.data.map((entry) =>
+                 <SupportconfigIndexEntry key={entry} entry={entry}/>
+               )}
+             </div>;        
     }
-    return <div>Loading ...</div>;
+    else {
+      return <span>Loading ...</span>;
+    }
   }
 });
 
+var setDatabaseUrl = function() {
+  var value = $("input[name=url]").val();
+  console.log("value " + value);
+  $.post("/database/url", { url: value });
+  ReactDOM.render(
+    <SupportconfigIndex/>,
+    document.getElementById('supportconfigs')
+  );
+};
+
+var DatabaseUrl = React.createClass({
+  getInitialState: function() {
+    console.log("DatabaseUrl getInitialState");
+    $.get("/database/url").done(function(url) {
+      console.log("/database/url");
+      this.setState({url: url});
+    }.bind(this));
+    return { url: null };
+  },
+  render: function() {
+    console.log("DatabaseUrl render");
+    if (this.state.url) {
+      console.log("Url: " + this.state.url);
+      return <div>
+               <input className='form-control' name='url' type='text' defaultValue={this.state.url} />
+               <button className='btn.btn-default' onClick={setDatabaseUrl}>Connect</button>
+             </div>;
+    }
+    return <div/>;
+  }
+});
+
+
 ReactDOM.render(
-  <Index entries='World'/>,
-  document.getElementById('index')
+  <DatabaseUrl/>,
+  document.getElementById('database_url')
 );
