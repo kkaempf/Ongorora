@@ -7,10 +7,13 @@ var SupportconfigIndexEntry  = React.createClass({
     }.bind(this));
     return { entry: null };
   },
+  select: function() {
+    console.log("select " + this.props.entry);
+  },
   render: function() {
     if (this.state.entry) {
       var entry = this.state.entry;
-      return <div className="supportconfig_index_entry col-md-12">
+      return <div className="supportconfig_index_entry col-md-12" href="#" onClick={this.select.bind()}>
                <span className="supportconfig_index_entry_name col-md-6">
                  {entry.name}
                </span>
