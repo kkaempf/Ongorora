@@ -16,12 +16,14 @@ var setDatabaseUrl = function() {
 var DatabaseUrl = React.createClass({
   getInitialState: function() {
     console.log("DatabaseUrl getInitialState");
+    return { url: null };
+  },
+  componentDidMount: function() {
     $.get("/database/url").done(function(url) {
       console.log("/database/url");
       this.setState({url: url});
     }.bind(this));
-    return { url: null };
-  },
+  },  
   render: function() {
     console.log("DatabaseUrl render");
     if (this.state.url) {
@@ -34,7 +36,6 @@ var DatabaseUrl = React.createClass({
     return <div/>;
   }
 });
-
 
 ReactDOM.render(
   <DatabaseUrl/>,

@@ -1,9 +1,9 @@
-var Tabs  = React.createClass({
+var Tabs = React.createClass({
   getInitialState: function() {
-    return { active: null };
+    return { tabs: [], active: null };
   },
   render: function() {
-    console.log("Tabs.render active " + this.props.active)
-    return <li className="active"><a href="#">Index</a></li>;
+    console.log("Tabs.render active " + this.props.active);
+    return <li className="active"><a href="#">{this.props.active}</a></li>;
   }
 });

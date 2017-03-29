@@ -1,17 +1,22 @@
 var SupportconfigIndexEntry  = React.createClass({
   getInitialState: function() {
     console.log("SupportconfigIndexEntry getInitialState " + this.props.entry);
+    return { entry: null };
+  },
+  componentDidMount: function() {
     $.get("/supportconfig/"+this.props.entry).done(function(data) {
-      console.log("/supportconfig/" + this.props.entry);
       this.setState({entry: data});
     }.bind(this));
-    return { entry: null };
   },
   select: function() {
     console.log("select " + this.props.entry);
     ReactDOM.render(
-      <Supportconfig/>,
-      document.getElementById('supportconfigs')
+      <Tabs active={this.props.entry}/>,
+      document.getElementById('tabs')
+    );
+    ReactDOM.render(
+      <SupportConfig/>,
+      document.getElementById('body')
     );
   },
   render: function() {
