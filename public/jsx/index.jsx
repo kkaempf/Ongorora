@@ -4,7 +4,7 @@ var SupportconfigIndexEntry  = React.createClass({
     return { entry: null };
   },
   componentDidMount: function() {
-    $.get("/supportconfig/"+this.props.entry).done(function(data) {
+    $.get("/supportconfig/index/"+this.props.entry).done(function(data) {
       this.setState({entry: data});
     }.bind(this));
   },

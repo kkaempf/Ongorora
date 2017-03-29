@@ -134,9 +134,18 @@ class App < Sinatra::Base
     items.to_json
   end
 
-  # single supportconfig data
-  get "/supportconfig/:name", provides: :json do
-    STDERR.puts "/supportconfig/#{params['name'].inspect}"
+  # supportconfig data for index
+  get "/supportconfig/index/:name", provides: :json do
+    STDERR.puts "/supportconfig/index/#{params['name'].inspect}"
+    supportconfig = Ongorora::Supportconfig.get params['name']
+    date = Ongorora::Date.get params['name']
+    supportconfig['date'] = date
+    supportconfig.to_json
+  end
+
+  # supportconfig data for initial overview
+  get "/supportconfig/overview/:name", provides: :json do
+    STDERR.puts "/supportconfig/overview/#{params['name'].inspect}"
     supportconfig = Ongorora::Supportconfig.get params['name']
     date = Ongorora::Date.get params['name']
     supportconfig['date'] = date
