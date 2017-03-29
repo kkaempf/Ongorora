@@ -15,7 +15,7 @@ var SupportconfigIndexEntry  = React.createClass({
       document.getElementById('tabs')
     );
     ReactDOM.render(
-      <SupportConfig/>,
+      <SupportConfig name={this.props.entry}/>,
       document.getElementById('body')
     );
   },
