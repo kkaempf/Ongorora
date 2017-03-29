@@ -1,17 +1,15 @@
 !!!
 .container-fluid
   %div.col-md-12
-    %div.panel.panel-default.col-md-12
-      %div.panel-heading
-        %h3.panel-title.title{:align => "left"}
-          Ongorora
-      %div.panel-body
-        #supportconfigs
+    %ul.nav.nav-tabs{:id => "tabs"}
+    #body
 
 != js :jquery
 != js :react
 != js :babel
-%script{:type => "text/babel", :src => "jsx/entry.jsx"}
+%script{:type => "text/babel", :src => "jsx/main.jsx"}
 %script{:type => "text/babel", :src => "jsx/index.jsx"}
+%script{:type => "text/babel", :src => "jsx/tabs.jsx"}
+%script{:type => "text/babel", :src => "jsx/supportconfig.jsx"}
 != js :bootstrap
 != js :bootstrap_table

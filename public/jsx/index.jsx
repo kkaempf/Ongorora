@@ -9,6 +9,10 @@ var SupportconfigIndexEntry  = React.createClass({
   },
   select: function() {
     console.log("select " + this.props.entry);
+    ReactDOM.render(
+      <Supportconfig/>,
+      document.getElementById('supportconfigs')
+    );
   },
   render: function() {
     if (this.state.entry) {
@@ -69,7 +73,11 @@ var setDatabaseUrl = function() {
   $.post("/database/url", { url: value });
   ReactDOM.render(
     <SupportconfigIndex/>,
-    document.getElementById('supportconfigs')
+    document.getElementById('body')
+  );
+  ReactDOM.render(
+    <Tabs active="index"/>,
+    document.getElementById('tabs')
   );
 };
 
