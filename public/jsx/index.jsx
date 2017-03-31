@@ -4,14 +4,17 @@ var SupportconfigIndexEntry  = React.createClass({
     return { entry: null };
   },
   componentDidMount: function() {
-    $.get("/supportconfig/index/"+this.props.entry).done(function(data) {
+    console.log("SupportconfigIndexEntry componentDidMount " + this.props.entry);
+    $.get("/supportconfig/index/" + this.props.entry).done(function(data) {
+      console.log("/supportconfig/index/ returned " + data);
       this.setState({entry: data});
     }.bind(this));
   },
   select: function() {
     console.log("select " + this.props.entry);
+    tabs.makeActive(this.props.entry);
     ReactDOM.render(
-      <Tabs active={this.props.entry}/>,
+      tabs,
       document.getElementById('tabs')
     );
     ReactDOM.render(
@@ -21,8 +24,9 @@ var SupportconfigIndexEntry  = React.createClass({
   },
   render: function() {
     if (this.state.entry) {
+      console.log("SupportconfigIndexEntry render " + this.state.entry.name);
       var entry = this.state.entry;
-      return <div className="supportconfig_index_entry col-md-12" href="#" onClick={this.select.bind()}>
+      return <div className="supportconfig_index_entry col-md-12" href="#" onClick={this.select}>
                <span className="supportconfig_index_entry_name col-md-6">
                  {entry.name}
                </span>
@@ -35,6 +39,7 @@ var SupportconfigIndexEntry  = React.createClass({
              </div>;
     }
     else {
+      console.log("SupportconfigIndexEntry render null");
       return <div className="supportconfig_index_entry col-md-12"></div>;
     }
   }
@@ -81,7 +86,7 @@ var setDatabaseUrl = function() {
     document.getElementById('body')
   );
   ReactDOM.render(
-    <Tabs active="index"/>,
+    tabs,
     document.getElementById('tabs')
   );
 };
