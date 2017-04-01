@@ -11,12 +11,8 @@ var SupportconfigIndexEntry  = React.createClass({
     }.bind(this));
   },
   select: function() {
-    console.log("select " + this.props.entry);
-    tabs.makeActive(this.props.entry);
-    ReactDOM.render(
-      tabs,
-      document.getElementById('tabs')
-    );
+    console.log("SupportconfigIndexEntry select " + this.props.entry);
+    setActiveTab(this.props.entry);
     ReactDOM.render(
       <SupportConfig name={this.props.entry}/>,
       document.getElementById('body')
@@ -24,8 +20,8 @@ var SupportconfigIndexEntry  = React.createClass({
   },
   render: function() {
     if (this.state.entry) {
-      console.log("SupportconfigIndexEntry render " + this.state.entry.name);
       var entry = this.state.entry;
+      console.log("SupportconfigIndexEntry render " + entry.name);
       return <div className="supportconfig_index_entry col-md-12" href="#" onClick={this.select}>
                <span className="supportconfig_index_entry_name col-md-6">
                  {entry.name}
@@ -76,43 +72,6 @@ var SupportconfigIndex = React.createClass({
     }
   }
 });
-
-var setDatabaseUrl = function() {
-  var value = $("input[name=url]").val();
-  console.log("value " + value);
-  $.post("/database/url", { url: value });
-  ReactDOM.render(
-    <SupportconfigIndex/>,
-    document.getElementById('body')
-  );
-  ReactDOM.render(
-    tabs,
-    document.getElementById('tabs')
-  );
-};
-
-var DatabaseUrl = React.createClass({
-  getInitialState: function() {
-    console.log("DatabaseUrl getInitialState");
-    $.get("/database/url").done(function(url) {
-      console.log("/database/url");
-      this.setState({url: url});
-    }.bind(this));
-    return { url: null };
-  },
-  render: function() {
-    console.log("DatabaseUrl render");
-    if (this.state.url) {
-      console.log("Url: " + this.state.url);
-      return <div>
-               <input className='form-control' name='url' type='text' defaultValue={this.state.url} />
-               <button className='btn.btn-default' onClick={setDatabaseUrl}>Connect</button>
-             </div>;
-    }
-    return <div/>;
-  }
-});
-
 
 ReactDOM.render(
   <DatabaseUrl/>,
