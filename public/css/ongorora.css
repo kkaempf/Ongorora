@@ -35,3 +35,14 @@ div.supportconfig_index_entry {
   border-color: grey;
   cursor: pointer;
 }
+
+a:link.tab_entry {
+  color: black;
+  font-weight: bold;
+  font-size: 120%;
+}
+a:visited.tab_entry {
+  color: black;
+  font-weight: bold;
+  font-size: 120%;
+}

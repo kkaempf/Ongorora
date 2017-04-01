@@ -1,17 +1,15 @@
 var SupportconfigIndexEntry  = React.createClass({
   getInitialState: function() {
-    console.log("SupportconfigIndexEntry getInitialState " + this.props.entry);
     return { entry: null };
   },
   componentDidMount: function() {
-    console.log("SupportconfigIndexEntry componentDidMount " + this.props.entry);
     $.get("/supportconfig/index/" + this.props.entry).done(function(data) {
       console.log("/supportconfig/index/ returned " + data);
       this.setState({entry: data});
     }.bind(this));
   },
   select: function() {
-    console.log("SupportconfigIndexEntry select " + this.props.entry);
+    console.log("SupportconfigIndexEntry.select >" + this.props.entry + "<");
     setActiveTab(this.props.entry);
     ReactDOM.render(
       <SupportConfig name={this.props.entry}/>,
@@ -21,7 +19,6 @@ var SupportconfigIndexEntry  = React.createClass({
   render: function() {
     if (this.state.entry) {
       var entry = this.state.entry;
-      console.log("SupportconfigIndexEntry render " + entry.name);
       return <div className="supportconfig_index_entry col-md-12" href="#" onClick={this.select}>
                <span className="supportconfig_index_entry_name col-md-6">
                  {entry.name}
@@ -35,7 +32,6 @@ var SupportconfigIndexEntry  = React.createClass({
              </div>;
     }
     else {
-      console.log("SupportconfigIndexEntry render null");
       return <div className="supportconfig_index_entry col-md-12"></div>;
     }
   }
@@ -43,9 +39,7 @@ var SupportconfigIndexEntry  = React.createClass({
 
 var SupportconfigIndex = React.createClass({
   getInitialState: function() {
-    console.log("Supportconfigs getInitialState");
     $.get("/supportconfig").done(function(data) {
-      console.log("/supportconfig");
       this.setState({data: data});
     }.bind(this));
     return { data: null };
@@ -72,8 +66,3 @@ var SupportconfigIndex = React.createClass({
     }
   }
 });
-
-ReactDOM.render(
-  <DatabaseUrl/>,
-  document.getElementById('database_url')
-);

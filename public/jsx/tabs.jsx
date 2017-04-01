@@ -24,21 +24,21 @@ var TabEntry = React.createClass({
     $.ajax({
       url: "/tabs/active",
       type: "PUT",
-      data: { tab: name },
+      data: { tab: this.props.name },
       success: function(tabs) {
         console.log("TabEntry select /tabs/active success name >" + name + "<");
         ReactDOM.render(
           <Tabs active={name}/>,
           document.getElementById('tabs')
         );
-      }
+      }.bind(this)
     });
   },
   render: function() {
     console.log("TabEntry.render name >" + this.props.name + "<, active >" + this.props.active + "<");
     return(
       <li className={this.props.active}>
-        <a data-toggle="tab" href={"#"+this.props.name} onClick={this.select}>{this.props.name}</a>
+        <a className="tab_entry" data-toggle="tab" href={"#"+this.props.name} onClick={this.select}>{this.props.name}</a>
       </li>
     );
   }
@@ -65,6 +65,7 @@ var Tabs = React.createClass({
     console.log("Tabs.render props.active >" + this.props.active + "<, state.active >" + this.state.active + "<");
     return(<ul className="nav nav-tabs">
              {this.state.tabs.map((tab) => {
+               console.log("Tabs.render tab " + tab);
                if (tab == this.state.active) {
                  var active = "active";
                }
