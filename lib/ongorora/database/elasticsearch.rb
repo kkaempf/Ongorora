@@ -21,11 +21,21 @@ module Ongorora
       @client
     end
     def _search opt
-      obj = @client.search opt
-      # STDERR.puts "obj #{obj.inspect}"
-      obj['hits']['hits'].map do |h|
-        # STDERR.puts "h #{h.inspect}"
-        h['_source']
+      STDERR.puts "Elasticsearch.search options #{opt.inspect}"
+      begin
+        obj = @client.search opt
+        STDERR.puts "Elasticsearch.search object #{obj.inspect}"
+      rescue Exception => e
+        STDERR.puts "Elasticsearch.search failed with #{e}"
+        return nil
+      end
+      if opt[:type]
+        obj['hits']['hits'].map do |h|
+          # STDERR.puts "h #{h.inspect}"
+          h['_source']
+        end
+      else
+        obj
       end
     end
     #
@@ -36,7 +46,13 @@ module Ongorora
     def read options = {}
       opt = {}
       opt[:index] = options[:index] || @index
-      opt[:type] = options[:type] || TYPE
+      if options[:type]
+        unless options[:type].empty?
+          opt[:type] = options[:type]
+        end
+      else
+        options[:type] = TYPE
+      end
       begin
         if options[:id]
           opt[:id] = options[:id]
@@ -47,6 +63,11 @@ module Ongorora
           k, v = options[:where].first
           opt[:q] = "#{k}:#{v}"
           _search opt
+        elsif options[:body]
+          opt[:body] = options[:body]
+          res = _search opt
+          STDERR.puts "Elasticsearch.read.body #{res.inspect}"
+          res
         else
           _search opt
         end

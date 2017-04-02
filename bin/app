@@ -145,13 +145,11 @@ class App < Sinatra::Base
     supportconfig.to_json
   end
 
-  # supportconfig data for initial overview
-  get "/supportconfig/overview/:name", provides: :json do
-    STDERR.puts "/supportconfig/overview/#{params['name'].inspect}"
-    supportconfig = Ongorora::Supportconfig.get params['name']
-    date = Ongorora::Date.get params['name']
-    supportconfig['date'] = date
-    supportconfig.to_json
+  # supportconfig elements
+  get "/supportconfig/elements/:name", provides: :json do
+    STDERR.puts "/supportconfig/elements/#{params['name'].inspect}"
+    elements = Ongorora::Supportconfig.elements params['name']
+    elements.to_json
   end
 
   run! if app_file == $0
