@@ -88,7 +88,7 @@ class Tabs extends React.Component {
     super(props);
     this.state = {
       active: "Index",
-      tabs: ["Index", "A", "FooFooBar", "ganz lang und äöü doof"]
+      tabs: ["Index"]
     };
     this.setActiveTab = this.setActiveTab.bind(this);
     this.closeActiveTab = this.closeActiveTab.bind(this);
@@ -98,8 +98,15 @@ class Tabs extends React.Component {
   }
   setActiveTab(name) {
     console.log("Tabs.setActiveTab " + name);
+    var tabs = this.state.tabs;
+    if (tabs.indexOf(name) == -1) {
+      tabs.push(name);
+      this.setState({
+        tabs: tabs
+      });
+    }
     this.setState({
-      active: name
+      active: name,
     });
     if (name == "Index") {
       ReactDOM.render(
@@ -115,12 +122,12 @@ class Tabs extends React.Component {
     }
   }
   closeActiveTab(name) {
-    console.log("Tabs.closeActiveTab " + name);
-    var new_tabs = this.state.tabs.filter(function(value) {
+    console.log("Tabs.closeActiveTab >" + name + "<");
+    var tabs = this.state.tabs.filter(function(value) {
       return value != name;
     })
     this.setState({
-      tabs: new_tabs
+      tabs: tabs
     });
     this.setActiveTab("Index");
   }
@@ -136,7 +143,6 @@ class Tabs extends React.Component {
                if (tab == "Index") {
                  is_index = true;
                }
-               console.log("Tabs.render: " + tab + ", active " + is_active);
                return(
                  <TabEntry
                    name={tab}
