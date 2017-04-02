@@ -44,12 +44,6 @@ class TabEntry extends React.Component {
     console.log("TabEntry.select " + this.props.name);
     this.props.setActiveTab(this.props.name);
   }
-  componentDidUpdate() {
-    ReactDOM.render(
-      <SupportConfigIndex/>,
-      document.getElementById('body')
-    );
-  }
   render() {
     if (this.props.isIndex) {
       var entry = <TabIndexEntry select={this.select}/>;
@@ -83,11 +77,26 @@ class Tabs extends React.Component {
     };
     this.setActiveTab = this.setActiveTab.bind(this);
   }
+  componentDidMount() {
+    this.setActiveTab(this.state.active);
+  }
   setActiveTab(name) {
     console.log("Tabs.setActiveTab " + name);
     this.setState({
       active: name
     });
+    if (name == "Index") {
+      ReactDOM.render(
+        <SupportConfigIndex/>,
+        document.getElementById('body')
+      );
+    }
+    else {
+      ReactDOM.render(
+        <SupportConfig name={name}/>,
+        document.getElementById('body')
+      );
+    }
   }
   closeActiveTab(name) {
     console.log("Tabs.closeActiveTab " + name);
