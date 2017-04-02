@@ -8,7 +8,7 @@ class TabAnchor extends React.Component {
     else {
       return(
         <a className="tab_entry" data-toggle="tab" href={this.props.href} onClick={this.props.select}>{this.props.name}
-          <span className="glyphicon glyphicon-remove-circle close-tab" aria-hidden="true"></span>
+          <span className="glyphicon glyphicon-remove-circle close-tab" aria-hidden="true" onClick={this.props.delete}></span>
         </a>
       );
     }
@@ -26,7 +26,7 @@ class TabIndexEntry extends React.Component {
 class TabNormalEntry extends React.Component {
   render() {
     return(
-      <TabAnchor href={this.props.href} select={this.props.select} name={this.props.name}/>
+      <TabAnchor href={this.props.href} select={this.props.select} delete={this.props.delete} name={this.props.name}/>
     );
   }
 }
@@ -39,17 +39,32 @@ class TabEntry extends React.Component {
       is_active: false
     };
     this.select = this.select.bind(this);
+    this.delete = this.delete.bind(this);
   }
   select() {
     console.log("TabEntry.select " + this.props.name);
     this.props.setActiveTab(this.props.name);
+  }
+  delete(e) {
+    console.log("TabEntry.delete " + this.props.name);
+    if (!e) {
+      e = window.event;
+    }
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    }
+    //IE8 and Lower
+    else {
+      e.cancelBubble = true;
+    }
+    this.props.closeActiveTab(this.props.name);
   }
   render() {
     if (this.props.isIndex) {
       var entry = <TabIndexEntry select={this.select}/>;
     }
     else {
-      var entry = <TabNormalEntry select={this.select} name={this.props.name}/>;
+      var entry = <TabNormalEntry select={this.select} delete={this.delete} name={this.props.name}/>;
     }
     if (this.props.isActive) {
       return(
@@ -76,6 +91,7 @@ class Tabs extends React.Component {
       tabs: ["Index", "A", "FooFooBar", "ganz lang und äöü doof"]
     };
     this.setActiveTab = this.setActiveTab.bind(this);
+    this.closeActiveTab = this.closeActiveTab.bind(this);
   }
   componentDidMount() {
     this.setActiveTab(this.state.active);
@@ -100,12 +116,13 @@ class Tabs extends React.Component {
   }
   closeActiveTab(name) {
     console.log("Tabs.closeActiveTab " + name);
-    var new_tabs = tabs.filter(function(value) {
+    var new_tabs = this.state.tabs.filter(function(value) {
       return value != name;
     })
     this.setState({
       tabs: new_tabs
     });
+    this.setActiveTab("Index");
   }
   render() {
     console.log("Tabs.render");
@@ -126,6 +143,7 @@ class Tabs extends React.Component {
                    isActive={is_active}
                    isIndex={is_index}
                    setActiveTab={this.setActiveTab}
+                   closeActiveTab={this.closeActiveTab}
                    key={tab}
                  />
                );
