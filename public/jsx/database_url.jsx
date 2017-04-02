@@ -2,11 +2,9 @@ var setDatabaseUrl = function() {
   var value = $("input[name=url]").val();
   $.post("/database/url", { url: value });
   ReactDOM.render(
-    <SupportconfigIndex/>,
-    document.getElementById('body')
+    <Tabs/>,
+    document.getElementById('tabs')
   );
-  console.log("setDatabaseUrl calling setActiveTab");
-  setActiveTab("");
 };
 
 var DatabaseUrl = React.createClass({

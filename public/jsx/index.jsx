@@ -4,17 +4,11 @@ var SupportconfigIndexEntry  = React.createClass({
   },
   componentDidMount: function() {
     $.get("/supportconfig/index/" + this.props.entry).done(function(data) {
-      console.log("/supportconfig/index/ returned " + data);
       this.setState({entry: data});
     }.bind(this));
   },
   select: function() {
-    console.log("SupportconfigIndexEntry.select >" + this.props.entry + "<");
-    setActiveTab(this.props.entry);
-    ReactDOM.render(
-      <SupportConfig name={this.props.entry}/>,
-      document.getElementById('body')
-    );
+    console.log("SupportconfigIndexEntry.select " + this.props.entry);
   },
   render: function() {
     if (this.state.entry) {

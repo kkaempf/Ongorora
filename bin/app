@@ -154,19 +154,5 @@ class App < Sinatra::Base
     supportconfig.to_json
   end
 
-  # toplevel tabs
-  # set active tab, return list of all tabs
-  put "/tabs/active", provides: :json do
-    STDERR.puts "\n\t/tabs/active params #{params.inspect}"
-    if params["tab"].empty?
-      @active_tab = "Index"
-    else
-      @active_tab = params["tab"]
-    end
-    @tabs << @active_tab unless @tabs.include?(@active_tab)
-    STDERR.puts "\n\t@tabs #{@tabs.inspect}"
-    @tabs.to_json
-  end
-
   run! if app_file == $0
 end
