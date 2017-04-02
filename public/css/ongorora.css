@@ -36,13 +36,13 @@ div.supportconfig_index_entry {
   cursor: pointer;
 }
 
-a:link.tab_entry {
+li > a.tab_entry {
   color: black;
   font-weight: bold;
   font-size: 120%;
 }
-a:visited.tab_entry {
-  color: black;
-  font-weight: bold;
-  font-size: 120%;
+
+span.close-tab {
+  margin-left: 2em;
+  font-size: 75%;
 }

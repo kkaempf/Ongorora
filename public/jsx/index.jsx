@@ -31,7 +31,7 @@ var SupportconfigIndexEntry  = React.createClass({
   }
 });
 
-var SupportconfigIndex = React.createClass({
+var SupportConfigIndex = React.createClass({
   getInitialState: function() {
     $.get("/supportconfig").done(function(data) {
       this.setState({data: data});
