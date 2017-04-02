@@ -103,7 +103,7 @@ class Tabs extends React.Component {
     });
     if (name == "Index") {
       ReactDOM.render(
-        <SupportConfigIndex/>,
+        <SupportConfigIndex setActiveTab={this.setActiveTab}/>,
         document.getElementById('body')
       );
     }

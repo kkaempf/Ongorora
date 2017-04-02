@@ -1,16 +1,20 @@
-var SupportconfigIndexEntry  = React.createClass({
-  getInitialState: function() {
-    return { entry: null };
-  },
-  componentDidMount: function() {
-    $.get("/supportconfig/index/" + this.props.entry).done(function(data) {
+class SupportConfigIndexEntry extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      entry: null
+    };
+    this.select = this.select.bind(this);
+  }
+  componentDidMount() {
+    $.get("/supportconfig/index/" + this.props.name).done(function(data) {
       this.setState({entry: data});
     }.bind(this));
-  },
-  select: function() {
-    console.log("SupportconfigIndexEntry.select " + this.props.entry);
-  },
-  render: function() {
+  }
+  select() {
+    this.props.setActiveTab(this.props.name);
+  }
+  render() {
     if (this.state.entry) {
       var entry = this.state.entry;
       return <div className="supportconfig_index_entry col-md-12" href="#" onClick={this.select}>
@@ -29,7 +33,7 @@ var SupportconfigIndexEntry  = React.createClass({
       return <div className="supportconfig_index_entry col-md-12"></div>;
     }
   }
-});
+}
 
 var SupportConfigIndex = React.createClass({
   getInitialState: function() {
@@ -51,7 +55,11 @@ var SupportConfigIndex = React.createClass({
                  Date
                </span>
                {this.state.data.map((entry) =>
-                 <SupportconfigIndexEntry key={entry} entry={entry}/>
+                 <SupportConfigIndexEntry
+                   key={entry}
+                   name={entry}
+                   setActiveTab={this.props.setActiveTab}
+                 />
                )}
              </div>;        
     }
