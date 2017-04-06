@@ -1,24 +1,24 @@
 class TabAnchor extends React.Component {
   render() {
-    if (this.props.isIndex) {
-      return(
-        <a className="tab_entry" data-toggle="tab" href={this.props.href} onClick={this.props.select}>{this.props.name}</a>
-      );
-    }
-    else {
+    if (this.props.delete) {
       return(
         <a className="tab_entry" data-toggle="tab" href={this.props.href} onClick={this.props.select}>{this.props.name}
           <span className="glyphicon glyphicon-remove-circle close-tab" aria-hidden="true" onClick={this.props.delete}></span>
         </a>
       );
     }
+    else {
+      return(
+        <a className="tab_entry" data-toggle="tab" href={this.props.href} onClick={this.props.select}>{this.props.name}</a>
+      );
+    }
   }
 }
 
-class TabIndexEntry extends React.Component {
+class TabFirstEntry extends React.Component {
   render() {
     return(
-      <TabAnchor href="#Index" select={this.props.select} name="Index" isIndex={true} />
+      <TabAnchor href={"#"+this.props.name} select={this.props.select} name={this.props.name} />
     );
   }
 }
@@ -60,8 +60,9 @@ class TabEntry extends React.Component {
     this.props.closeActiveTab(this.props.name);
   }
   render() {
-    if (this.props.isIndex) {
-      var entry = <TabIndexEntry select={this.select}/>;
+    console.log("TabEntry.render isFirst:" + this.props.isFirst);
+    if (this.props.isFirst) {
+      var entry = <TabFirstEntry select={this.select} name={this.props.name}/>;
     }
     else {
       var entry = <TabNormalEntry select={this.select} delete={this.delete} name={this.props.name}/>;
@@ -87,8 +88,8 @@ class Tabs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: "Index",
-      tabs: ["Index"]
+      active: props.firstName,
+      tabs: [props.firstName]
     };
     this.setActiveTab = this.setActiveTab.bind(this);
     this.closeActiveTab = this.closeActiveTab.bind(this);
@@ -108,7 +109,7 @@ class Tabs extends React.Component {
     this.setState({
       active: name,
     });
-    if (name == "Index") {
+    if (name == this.props.firstName) {
       ReactDOM.render(
         <SupportConfigIndex setActiveTab={this.setActiveTab}/>,
         document.getElementById('body')
@@ -129,25 +130,16 @@ class Tabs extends React.Component {
     this.setState({
       tabs: tabs
     });
-    this.setActiveTab("Index");
+    this.setActiveTab(this.props.firstName);
   }
   render() {
-    console.log("Tabs.render");
     return(<ul className="nav nav-tabs">
              {this.state.tabs.map((tab) => {
-               var is_active = false;
-               if (tab == this.state.active) {
-                 is_active = true;
-               }
-               var is_index = false;
-               if (tab == "Index") {
-                 is_index = true;
-               }
                return(
                  <TabEntry
                    name={tab}
-                   isActive={is_active}
-                   isIndex={is_index}
+                   isActive={tab == this.state.active}
+                   isFirst={tab == this.props.firstName}
                    setActiveTab={this.setActiveTab}
                    closeActiveTab={this.closeActiveTab}
                    key={tab}

@@ -2,7 +2,7 @@ var setDatabaseUrl = function() {
   var value = $("input[name=url]").val();
   $.post("/database/url", { url: value });
   ReactDOM.render(
-    <Tabs/>,
+    <Tabs firstName="Index"/>,
     document.getElementById('tabs')
   );
 };
