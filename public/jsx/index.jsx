@@ -43,7 +43,11 @@ var SupportConfigIndex = React.createClass({
     return { data: null };
   },
   render: function() {
-    if (this.state.data) {
+    var supportconfigs = this.state.data;
+    if (supportconfigs) {
+      console.log("Have supportconfigs >" + supportconfigs + "<");
+      if (supportconfigs.length && supportconfigs.length > 0) {
+        console.log("State.data is full >" + supportconfigs.length + "<");
       return <div className="supportconfig_index col-md-12">
                <span className="supportconfig_index_head col-md-6">
                  Name
@@ -54,14 +58,19 @@ var SupportConfigIndex = React.createClass({
                <span className="supportconfig_index_head col-md-3">
                  Date
                </span>
-               {this.state.data.map((entry) =>
+               {supportconfigs.map((entry) =>
                  <SupportConfigIndexEntry
                    key={entry}
                    name={entry}
                    setActiveTab={this.props.setActiveTab}
                  />
                )}
-             </div>;        
+             </div>;
+      }
+      else {
+        console.log("supportconfigs is empty " + supportconfigs.length);
+        return <span>No supportconfigs found. Is Elasticsearch running ?</span>;
+      }
     }
     else {
       return <span>Loading ...</span>;
