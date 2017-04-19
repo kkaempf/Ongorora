@@ -1,8 +1,12 @@
+var activate = function(name) {
+  console.log("Activate " + name);
+}
+
 var setDatabaseUrl = function() {
   var value = $("input[name=url]").val();
   $.post("/database/url", { url: value });
   ReactDOM.render(
-    <Tabs firstName="Index"/>,
+    <Tabs firstName="Index" activateTab={activate}/>,
     document.getElementById('tabs')
   );
 };

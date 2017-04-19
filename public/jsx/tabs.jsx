@@ -109,6 +109,7 @@ class Tabs extends React.Component {
     this.setState({
       active: name,
     });
+    this.props.activateTab(name);
     if (name == this.props.firstName) {
       ReactDOM.render(
         <SupportConfigIndex setActiveTab={this.setActiveTab}/>,
