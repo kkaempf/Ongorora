@@ -89,7 +89,7 @@ class Tabs extends React.Component {
     super(props);
     this.state = {
       active: props.firstName,
-      tabs: [props.firstName]
+      tabs: [props.firstName].concat(props.tabs)
     };
     this.setActiveTab = this.setActiveTab.bind(this);
     this.addTab = this.addTab.bind(this);
@@ -149,3 +149,7 @@ class Tabs extends React.Component {
            </ul>);
   }
 }
+Tabs.defaultProps = {
+  firstName: "",
+  tabs: []
+};
