@@ -92,42 +92,40 @@ class Tabs extends React.Component {
       tabs: [props.firstName]
     };
     this.setActiveTab = this.setActiveTab.bind(this);
+    this.addTab = this.addTab.bind(this);
+    this.removeTab = this.removeTab.bind(this);
     this.closeActiveTab = this.closeActiveTab.bind(this);
   }
   componentDidMount() {
     this.setActiveTab(this.state.active);
   }
-  setActiveTab(name) {
-    console.log("Tabs.setActiveTab " + name);
-    var tabs = this.state.tabs;
-    if (tabs.indexOf(name) == -1) {
+  addTab(name) {
+    console.log("Tabs.addTab " + name);
+    let tabs = this.state.tabs;
+    if (tabs.indexOf(name) == -1) { /* prevent duplicates */
       tabs.push(name);
       this.setState({
         tabs: tabs
       });
     }
+  }
+  removeTab(name) {
+    console.log("Tabs.removeTab " + name);
+    this.state.tabs.filter(function(value) {
+      return value != name;
+    });
+  }
+  setActiveTab(name) {
+    console.log("Tabs.setActiveTab " + name);
+    this.addTab(name);
     this.setState({
       active: name,
     });
-    this.props.activateTab(name);
-    if (name == this.props.firstName) {
-      ReactDOM.render(
-        <SupportConfigIndex setActiveTab={this.setActiveTab}/>,
-        document.getElementById('body')
-      );
-    }
-    else {
-      ReactDOM.render(
-        <SupportConfig name={name}/>,
-        document.getElementById('body')
-      );
-    }
+    this.props.activateTab(name, this.setActiveTab);
   }
   closeActiveTab(name) {
     console.log("Tabs.closeActiveTab >" + name + "<");
-    var tabs = this.state.tabs.filter(function(value) {
-      return value != name;
-    })
+    this.removeTab(name);
     this.setState({
       tabs: tabs
     });

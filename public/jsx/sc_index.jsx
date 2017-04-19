@@ -41,6 +41,7 @@ class SupportConfigIndex extends React.Component {
     this.state = {
       data: null
     }
+    console.log("SupportConfigIndex.props.setActiveTab " + this.props.setActiveTab);
   }
   componentDidMount() {
     $.get("/supportconfig").done(function(data) {
