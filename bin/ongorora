@@ -27,7 +27,7 @@ if opts[:server_given]
   end
 end
 
-Ongorora = Ongorora::Ongorora.new
+ongorora = Ongorora::Ongorora.new
 
 opts.each_pair do |key,val|
 #  puts "Opt #{key.inspect} : #{val.inspect}" if DEBUG
@@ -37,7 +37,7 @@ opts.each_pair do |key,val|
   case key
   when :import
     begin
-      Ongorora.import val
+      ongorora.import val
     rescue Exception => e
       $stderr.puts "Import failed: #{e}"
     end
