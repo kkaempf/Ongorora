@@ -20,7 +20,7 @@ class SupportConfig extends React.Component {
       });
     }.bind(this));
   }
-  activate(name) {
+  activate(name, setActiveTab) {
     console.log("Supportconfig.activate " + name);
     ReactDOM.render(
       <SupportConfigElement element={name}/>,
@@ -41,7 +41,7 @@ class SupportConfig extends React.Component {
       console.log("SupportConfig.render " + this.state.elements.length + " elements");
       return(
         <div>
-          <Tabs firstName="Supportconfig" activateTab={this.activate}/>
+          <Tabs firstName="Supportconfig" activateTab={this.activate} tabs={this.state.elements}/>
           <div id="supportconfig_data"/>
         </div>
       );
