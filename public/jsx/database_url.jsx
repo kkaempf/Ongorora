@@ -1,32 +1,29 @@
-var activate = function(name) {
-  console.log("Activate " + name);
-}
-
-var setDatabaseUrl = function() {
-  var value = $("input[name=url]").val();
-  $.post("/database/url", { url: value });
-  ReactDOM.render(
-    <Tabs firstName="Index" activateTab={activate}/>,
-    document.getElementById('tabs')
-  );
-};
-
-var DatabaseUrl = React.createClass({
-  getInitialState: function() {
-    return { url: null };
-  },
-  componentDidMount: function() {
+class DatabaseUrl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      url: null
+    };
+    this.connect = this.connect.bind(this);
+  }
+  connect() {
+    console.log("DatabaseUrl.connect");
+    var value = $("input[name=url]").val();
+    $.post("/database/url", { url: value });
+    this.props.connect();
+  }
+  componentDidMount() {
     $.get("/database/url").done(function(url) {
       this.setState({url: url});
     }.bind(this));
-  },  
-  render: function() {
+  }
+  render() {
     if (this.state.url) {
       return <div>
                <input className='form-control' name='url' type='text' defaultValue={this.state.url} />
-               <button className='btn.btn-default' onClick={setDatabaseUrl}>Connect</button>
+               <button className='btn.btn-default' onClick={this.connect}>Connect</button>
              </div>;
     }
     return <div/>;
   }
-});
+}

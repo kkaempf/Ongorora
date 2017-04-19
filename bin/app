@@ -138,10 +138,15 @@ class App < Sinatra::Base
 
   # supportconfig data for index
   get "/supportconfig/index/:name", provides: :json do
-    STDERR.puts "/supportconfig/index/#{params['name'].inspect}"
-    supportconfig = Ongorora::Supportconfig.get params['name']
-    date = Ongorora::Date.get params['name'] rescue Time.at(0)
-    supportconfig['date'] = date
+    name = params['name']
+    STDERR.puts "/supportconfig/index/#{name.inspect}"
+    supportconfig = Ongorora::Supportconfig.get name
+    if supportconfig
+      date = Ongorora::Date.get(name) rescue Time.at(0)
+      supportconfig['date'] = date
+    else
+      STDERR.puts "*** No 'supportconfig' type entry found"
+    end
     supportconfig.to_json
   end
 

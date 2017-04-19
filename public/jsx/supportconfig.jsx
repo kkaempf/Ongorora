@@ -11,6 +11,7 @@ class SupportConfig extends React.Component {
     this.state = {
       elements: []
     };
+    this.activate = this.activate.bind(this);
   }
   componentDidMount() {
     $.get("/supportconfig/elements/" + this.props.name).done(function(elements) {
@@ -18,6 +19,9 @@ class SupportConfig extends React.Component {
         elements: elements
       });
     }.bind(this));
+  }
+  activate(name) {
+    console.log("Supportconfig.activate " + name);
   }
   dummy() {
     this.state.elements.map((element) => {
@@ -32,7 +36,7 @@ class SupportConfig extends React.Component {
     else {
       console.log("SupportConfig.render " + this.state.elements.length + " elements");
       return(
-        <Tabs firstName="Supportconfig"/>
+        <Tabs firstName="Supportconfig" activateTab={this.activate}/>
       );
     }
   }
