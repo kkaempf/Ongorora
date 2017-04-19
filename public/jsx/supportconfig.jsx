@@ -22,6 +22,10 @@ class SupportConfig extends React.Component {
   }
   activate(name) {
     console.log("Supportconfig.activate " + name);
+    ReactDOM.render(
+      <SupportConfigElement element={name}/>,
+      document.getElementById('supportconfig_data')
+    );
   }
   dummy() {
     this.state.elements.map((element) => {
@@ -36,7 +40,10 @@ class SupportConfig extends React.Component {
     else {
       console.log("SupportConfig.render " + this.state.elements.length + " elements");
       return(
-        <Tabs firstName="Supportconfig" activateTab={this.activate}/>
+        <div>
+          <Tabs firstName="Supportconfig" activateTab={this.activate}/>
+          <div id="supportconfig_data"/>
+        </div>
       );
     }
   }
