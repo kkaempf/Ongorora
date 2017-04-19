@@ -140,7 +140,7 @@ class App < Sinatra::Base
   get "/supportconfig/index/:name", provides: :json do
     STDERR.puts "/supportconfig/index/#{params['name'].inspect}"
     supportconfig = Ongorora::Supportconfig.get params['name']
-    date = Ongorora::Date.get params['name']
+    date = Ongorora::Date.get params['name'] rescue Time.at(0)
     supportconfig['date'] = date
     supportconfig.to_json
   end
