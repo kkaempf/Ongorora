@@ -60,7 +60,6 @@ class TabEntry extends React.Component {
     this.props.closeActiveTab(this.props.name);
   }
   render() {
-    console.log("TabEntry.render isFirst:" + this.props.isFirst);
     if (this.props.isFirst) {
       var entry = <TabFirstEntry select={this.select} name={this.props.name}/>;
     }
@@ -111,8 +110,11 @@ class Tabs extends React.Component {
   }
   removeTab(name) {
     console.log("Tabs.removeTab " + name);
-    this.state.tabs.filter(function(value) {
+    let new_tabs = this.state.tabs.filter(function(value) {
       return value != name;
+    });
+    this.setState({
+      tabs: new_tabs
     });
   }
   setActiveTab(name) {
@@ -126,9 +128,6 @@ class Tabs extends React.Component {
   closeActiveTab(name) {
     console.log("Tabs.closeActiveTab >" + name + "<");
     this.removeTab(name);
-    this.setState({
-      tabs: tabs
-    });
     this.setActiveTab(this.props.firstName);
   }
   render() {
