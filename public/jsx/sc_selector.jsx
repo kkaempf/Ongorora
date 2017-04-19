@@ -1,14 +1,11 @@
 class ScSelector extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      firstName: "Index"
-    }
     this.activate = this.activate.bind(this);
   }
   activate(name, setActiveTab) {
     console.log("ScSelector.activate " + name);
-    if (name == this.state.firstName) {
+    if (name == this.props.firstName) {
       ReactDOM.render(
         <SupportConfigIndex setActiveTab={setActiveTab}/>,
         document.getElementById('body')
@@ -22,6 +19,8 @@ class ScSelector extends React.Component {
     }
   }
   render() {
-    return <Tabs firstName={this.state.firstName} activateTab={this.activate}/>;
+    return <Tabs firstName={this.props.firstName} activateTab={this.activate}/>;
   }
 }
+
+ScSelector.defaultProps = { firstName: "Index" };
