@@ -35,20 +35,25 @@ class SupportConfigIndexEntry extends React.Component {
   }
 }
 
-var SupportConfigIndex = React.createClass({
-  getInitialState: function() {
+class SupportConfigIndex extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: null
+    }
+  }
+  componentDidMount() {
     $.get("/supportconfig").done(function(data) {
       this.setState({data: data});
     }.bind(this));
-    return { data: null };
-  },
-  render: function() {
-    var supportconfigs = this.state.data;
+  }
+  render() {
+    let supportconfigs = this.state.data;
     if (supportconfigs) {
       console.log("Have supportconfigs >" + supportconfigs + "<");
       if (supportconfigs.length && supportconfigs.length > 0) {
         console.log("State.data is full >" + supportconfigs.length + "<");
-      return <div className="supportconfig_index col-md-12">
+        return <div className="supportconfig_index col-md-12">
                <span className="supportconfig_index_head col-md-6">
                  Name
                </span>
@@ -76,4 +81,4 @@ var SupportConfigIndex = React.createClass({
       return <span>Loading ...</span>;
     }
   }
-});
+}
