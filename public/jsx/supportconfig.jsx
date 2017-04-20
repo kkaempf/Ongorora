@@ -36,7 +36,7 @@ class SupportConfig extends React.Component {
       console.log("SupportConfig.render " + this.state.elements.length + " elements");
       return(
         <div>
-          <Tabs firstName="Supportconfig" activateTab={this.activate} tabs={this.state.elements}/>
+          <Tabs firstName="Supportconfig" activateTab={this.activate} allowClose={false} tabs={this.state.elements}/>
           <div id="supportconfig_data"/>
         </div>
       );

@@ -19,7 +19,7 @@ class ScSelector extends React.Component {
     }
   }
   render() {
-    return <Tabs firstName={this.props.firstName} activateTab={this.activate}/>;
+    return <Tabs firstName={this.props.firstName} activateTab={this.activate} allowClose={true}/>;
   }
 }
 
