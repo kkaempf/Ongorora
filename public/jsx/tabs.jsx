@@ -63,8 +63,11 @@ class TabEntry extends React.Component {
     if (this.props.isFirst) {
       var entry = <TabFirstEntry select={this.select} name={this.props.name}/>;
     }
-    else {
+    else if (this.props.allowClose) {
       var entry = <TabNormalEntry select={this.select} delete={this.delete} name={this.props.name}/>;
+    }
+    else {
+      var entry = <TabNormalEntry select={this.select} name={this.props.name}/>;
     }
     if (this.props.isActive) {
       return(
@@ -140,6 +143,7 @@ class Tabs extends React.Component {
                    isFirst={tab == this.props.firstName}
                    setActiveTab={this.setActiveTab}
                    closeActiveTab={this.closeActiveTab}
+                   allowClose={this.props.allowClose}
                    key={tab}
                  />
                );
