@@ -27,11 +27,6 @@ class SupportConfig extends React.Component {
       document.getElementById('supportconfig_data')
     );
   }
-  dummy() {
-    this.state.elements.map((element) => {
-      <SupportConfigElement element={element} key={element}/>
-    });
-  }
   render() {
     console.log("SupportConfig.render name " + this.props.name);
     if (this.state.elements.length == 0) {
