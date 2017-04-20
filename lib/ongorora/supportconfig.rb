@@ -26,7 +26,7 @@ module Ongorora
 #        },
 #        "size": 0
 #      }'
-                                    
+
       db = ::Ongorora.database
       begin
         STDERR.puts "Supportconfig.elements #{name.inspect}"
@@ -66,6 +66,15 @@ module Ongorora
       rescue Exception => e
         STDERR.puts "Type aggregation failed with #{e}"
         []
+      end
+    end
+    # return array of elements
+    def self.uname name
+      db = ::Ongorora.database
+      begin
+        STDERR.puts "Supportconfig.uname #{name.inspect}"
+        res = db.read(:index => "elasticsupport", :type => "uname", :where => { :name => name }).first
+        res["uname"]
       end
     end
   end

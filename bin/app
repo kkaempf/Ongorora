@@ -157,5 +157,11 @@ class App < Sinatra::Base
     elements.to_json
   end
 
+  # supportconfig uname
+  get "/supportconfig/uname/:name", provides: :json do
+    uname = Ongorora::Supportconfig.uname params['name']
+    uname.to_json
+  end
+
   run! if app_file == $0
 end
