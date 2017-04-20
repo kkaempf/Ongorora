@@ -163,5 +163,17 @@ class App < Sinatra::Base
     uname.to_json
   end
 
+  # supportconfig SUSE-release
+  get "/supportconfig/suse_release/:name", provides: :json do
+    release = Ongorora::Supportconfig.suse_release params['name']
+    release.to_json
+  end
+
+  # supportconfig kernel
+  get "/supportconfig/kernel/:name", provides: :json do
+    kernel = Ongorora::Supportconfig.kernel params['name']
+    kernel.to_json
+  end
+
   run! if app_file == $0
 end

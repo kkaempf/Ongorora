@@ -68,13 +68,32 @@ module Ongorora
         []
       end
     end
-    # return array of elements
+    # return uname
     def self.uname name
       db = ::Ongorora.database
       begin
-        STDERR.puts "Supportconfig.uname #{name.inspect}"
         res = db.read(:index => "elasticsupport", :type => "uname", :where => { :name => name }).first
+        STDERR.puts "Supportconfig.uname #{name.inspect} => #{res.inspect}"
         res["uname"]
+      end
+    end
+    # return suse release
+    def self.suse_release name
+      db = ::Ongorora.database
+      begin
+        res = db.read(:index => "elasticsupport", :type => "suse_release", :where => { :name => name }).first
+        STDERR.puts "Supportconfig.suse_release #{name.inspect} => #{res.inspect}"
+        # {"os"=>"SUSE Linux Enterprise Server 12 (x86_64)", "sle_version"=>"12SP1", "version"=>12, "patchlevel"=>1 ...}
+        res
+      end
+    end
+    # return running kernel
+    def self.kernel name
+      db = ::Ongorora.database
+      begin
+        res = db.read(:index => "elasticsupport", :type => "running_kernel", :where => { :name => name }).first
+        STDERR.puts "Supportconfig.kernel #{name.inspect} => #{res.inspect}"
+        res["kernel"]
       end
     end
   end

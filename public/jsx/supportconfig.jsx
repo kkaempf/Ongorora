@@ -1,4 +1,46 @@
-class SupportConfigBase extends React.Component {
+class SupportConfigKernel extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      kernel: ""
+    };
+  }
+  componentDidMount() {
+    $.get("/supportconfig/kernel/" + this.props.name).done(function(kernel) {
+      this.setState({
+        kernel: kernel
+      });
+    }.bind(this));
+  }
+  render() {
+    return(<div>kernel : {this.state.kernel}</div>);
+  }
+}
+
+class SupportConfigSuseRelease extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      release: ""
+    };
+  }
+  componentDidMount() {
+    $.get("/supportconfig/suse_release/" + this.props.name).done(function(release) {
+      /* {"os"=>"SUSE Linux Enterprise Server 12 (x86_64)", "sle_version"=>"12SP1", "version"=>12, "patchlevel"=>1 */
+      this.setState({
+        os: release["os"],
+        sle_version: release["sle_version"],
+        version: release["version"],
+        patchlevel: release["patchlevel"]
+      });
+    }.bind(this));
+  }
+  render() {
+    return(<div>SUSERelease : {this.state.os}, {this.state.sle_version}, {this.state.version}, {this.state.patchlevel}</div>);
+  }
+}
+
+class SupportConfigUname extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,8 +55,19 @@ class SupportConfigBase extends React.Component {
     }.bind(this));
   }
   render() {
+    return(<div>uname : {this.state.uname}</div>);
+  }
+}
+
+class SupportConfigBase extends React.Component {
+  render() {
     console.log("SupportConfigBase " + this.props.name);
-    return(<div>{this.props.name} : {this.state.uname}</div>);
+    return(
+      <div>
+        <SupportConfigUname name={this.props.name}/>
+        <SupportConfigSuseRelease name={this.props.name}/>
+        <SupportConfigKernel name={this.props.name}/>
+      </div>);
   }
 }
 
