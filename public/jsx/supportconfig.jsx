@@ -13,7 +13,7 @@ class SupportConfigKernel extends React.Component {
     }.bind(this));
   }
   render() {
-    return(<div>kernel : {this.state.kernel}</div>);
+    return(<div className='kernel'>kernel : {this.state.kernel}</div>);
   }
 }
 
@@ -36,7 +36,7 @@ class SupportConfigSuseRelease extends React.Component {
     }.bind(this));
   }
   render() {
-    return(<div>SUSERelease : {this.state.os}, {this.state.sle_version}, {this.state.version}, {this.state.patchlevel}</div>);
+    return(<div className='suse_release'>SUSERelease : {this.state.os}, {this.state.sle_version}, {this.state.version}, {this.state.patchlevel}</div>);
   }
 }
 
@@ -55,7 +55,7 @@ class SupportConfigUname extends React.Component {
     }.bind(this));
   }
   render() {
-    return(<div>uname : {this.state.uname}</div>);
+    return(<div className='uname'>uname : {this.state.uname}</div>);
   }
 }
 
@@ -74,7 +74,7 @@ class SupportConfigBase extends React.Component {
 class SupportConfigLog extends React.Component {
   render() {
     console.log("SupportConfigLog " + this.props.element);
-    return(<div>{this.props.name} : {this.props.element}</div>);
+    return(<div className='log'>{this.props.name} : {this.props.element}</div>);
   }
 }
 

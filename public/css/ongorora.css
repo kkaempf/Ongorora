@@ -46,3 +46,18 @@ span.close-tab {
   margin-left: 2em;
   font-size: 75%;
 }
+
+.kernel {
+  font-weight: bold;
+  font-size: 120%;
+}
+
+.suse_release {
+  background-color: #FFF176; 
+}
+
+.uname {
+  font-weight: bold;
+  font-size: 120%;
+  color: blue;
+}
