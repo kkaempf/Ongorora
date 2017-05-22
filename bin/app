@@ -175,5 +175,11 @@ class App < Sinatra::Base
     kernel.to_json
   end
 
+  # supportconfig log
+  get "/supportconfig/log/:log/:name/:scroll", provides: :json do
+    log = Ongorora::Supportconfig.log params['log'], params['name'], params['scroll']
+    log.to_json
+  end
+
   run! if app_file == $0
 end

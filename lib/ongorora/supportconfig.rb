@@ -96,5 +96,16 @@ module Ongorora
         res["kernel"]
       end
     end
+    # return log
+    def self.log log, name, scroll
+      db = ::Ongorora.database
+      begin
+        res = db.read :index => name.downcase, :type => log.tr(".","_"), :body => {
+          :from => scroll, :size => 100
+        }
+        STDERR.puts "Supportconfig.log #{name.inspect} => #{res.inspect}"
+        res.collect { |r| r["message"] }
+      end
+    end
   end
 end
