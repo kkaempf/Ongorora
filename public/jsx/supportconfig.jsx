@@ -71,13 +71,6 @@ class SupportConfigBase extends React.Component {
   }
 }
 
-class SupportConfigLog extends React.Component {
-  render() {
-    console.log("SupportConfigLog " + this.props.element);
-    return(<div className='log'>{this.props.name} : {this.props.element}</div>);
-  }
-}
-
 class SupportConfig extends React.Component {
   constructor(props) {
     super(props);
@@ -103,7 +96,7 @@ class SupportConfig extends React.Component {
     }
     else {
       ReactDOM.render(
-        <SupportConfigLog name={this.props.name} element={name}/>,
+        <LogView name={this.props.name} element={name}/>,
         document.getElementById('supportconfig_data')
       );
     }
